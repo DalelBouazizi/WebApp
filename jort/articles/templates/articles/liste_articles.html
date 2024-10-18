@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="frc">
+<head>
+    <title>Liste des Articles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .hero {
+            background-image: url('https://www.entreprises-magazine.com/wp-content/uploads/2022/04/jort-696x402.webp');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #007bff; /* Blue color */
+        }
+        .services {
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: -50px;
+            border-radius: 10px;
+        }
+        .service {
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+        }
+        .service i {
+            font-size: 2em;
+            color: #007bff;
+        }
+        .service h3 {
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        .service p {
+            font-size: 0.9em;
+            color: gray;
+        }
+        .service.active {
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px;
+        }
+        .service.active i {
+            color: white;
+        }
+        .search-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .search-field input, .search-field select {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+        }
+        .search-field button {
+            background-color: white;
+            color: #007bff;
+            border: 1px solid #007bff;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Journal officiel de la République tunisienne</h1>
+    </div>
+    <div class="services">
+        <div class="service">
+            <i class="fas fa-home"></i>
+            <h3>ACCUEIL</h3>
+        </div>
+        <div class="service">
+            <i class="fas fa-address-book"></i>
+            <a href="{% url 'contact' %}" style="text-decoration:none;color:inherit;">
+                <h3>CONTACT</h3> 
+            </a>
+        </div>
+        <div class="service active">
+            <i class="fas fa-search"></i>
+            <h3>RECHERCHE</h3>
+            <form method="GET" action="">
+                <input type="text" name="date" value="{{ query_date }}" placeholder="Rechercher par date">
+                <input type="text" name="category" value="{{ query_category }}" placeholder="Rechercher par catégorie">
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Contenu</th>
+                <th>Catégorie</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if articles %}
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.date }}</td>
+                        <td>{{ article.content }}</td>
+                        <td>{{ article.category }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'delete_article' article.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun article trouvé.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

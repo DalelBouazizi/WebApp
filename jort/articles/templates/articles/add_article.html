@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Article</title>
+</head>
+<body>
+    <h1>Ajouter un Article</h1>
+    <form method="POST" action="{% url 'add_article' %}">
+        {% csrf_token %}
+        <label for="date">Date:</label>
+        <input type="text" id="date" name="date" required><br>
+        <label for="content">Contenu:</label>
+        <textarea id="content" name="content" required></textarea><br>
+        <button type="submit">Ajouter</button>
+    </form>
+    <a href="{% url 'liste_articles' %}">Retour à la liste des articles</a>
+</body>
+</html>
+
